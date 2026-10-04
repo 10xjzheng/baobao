@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>宝贝时光 · UI 方向比较</title>
+  <style>
+    :root {
+      --ink: #26332f;
+      --muted: #8a938e;
+      --line: #e8ebe8;
+      --paper: #fbfbfa;
+      --white: #fff;
+      --red: #ff5f57;
+      --yellow: #ffbd2e;
+      --green: #28c840;
+      --soft-red: #ffe8e5;
+      --soft-yellow: #fff4d8;
+      --soft-green: #e4f5ea;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #eef1ef;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    }
+    .page { max-width: 1320px; margin: 0 auto; padding: 44px 24px 64px; }
+    .intro { max-width: 760px; margin-bottom: 32px; }
+    h1 { margin: 0 0 10px; font-size: 30px; }
+    .intro p, .note { margin: 0; color: #66716c; line-height: 1.7; }
+    .options { display: grid; grid-template-columns: repeat(3, minmax(375px, 1fr)); gap: 28px; overflow-x: auto; padding-bottom: 14px; }
+    .option { min-width: 375px; }
+    .meta { min-height: 112px; margin-bottom: 14px; }
+    .meta h2 { margin: 0 0 7px; font-size: 20px; }
+    .meta p { margin: 0 0 5px; color: #66716c; font-size: 14px; line-height: 1.55; }
+    .phone {
+      position: relative;
+      width: 375px;
+      height: 812px;
+      overflow: hidden;
+      border: 1px solid #d7ddd9;
+      border-radius: 40px;
+      background: var(--paper);
+      box-shadow: 0 24px 65px rgba(49, 66, 58, .12);
+    }
+    .status { height: 44px; padding: 13px 22px 0; font-size: 12px; font-weight: 650; }
+    .capsule { position: absolute; top: 9px; right: 13px; width: 86px; height: 32px; border: 1px solid rgba(0,0,0,.12); border-radius: 18px; background: rgba(255,255,255,.72); }
+    .capsule::before { content: "•••"; position: absolute; left: 15px; top: 3px; letter-spacing: 1px; }
+    .capsule::after { content: "○"; position: absolute; right: 12px; top: 4px; }
+    .content { height: 696px; overflow: hidden; padding: 10px 18px 24px; }
+    .topbar { min-height: 54px; padding-right: 92px; }
+    .traffic { display: flex; gap: 6px; margin-bottom: 8px; }
+    .traffic i { width: 8px; height: 8px; border-radius: 50%; }
+    .traffic i:nth-child(1) { background: var(--red); }
+    .traffic i:nth-child(2) { background: var(--yellow); }
+    .traffic i:nth-child(3) { background: var(--green); }
+    .title { font-size: 22px; font-weight: 700; }
+    .subtitle { margin-top: 3px; color: var(--muted); font-size: 13px; }
+    .section-title { margin: 22px 0 11px; font-size: 16px; font-weight: 650; }
+    .card { background: var(--white); border-radius: 18px; }
+    .summary { padding: 18px; }
+    .summary-head { display: flex; align-items: center; justify-content: space-between; }
+    .summary-head span:first-child { font-size: 14px; font-weight: 650; }
+    .badge { padding: 5px 9px; border-radius: 999px; color: #9b7022; background: var(--soft-yellow); font-size: 11px; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 17px; }
+    .stat { padding: 14px; border-radius: 15px; }
+    .stat strong { display: block; font-size: 25px; line-height: 1.1; }
+    .stat small { color: var(--muted); }
+    .stat.feed { background: var(--soft-yellow); }
+    .stat.growth { background: var(--soft-green); }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .action { min-height: 56px; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 15px; font-size: 14px; font-weight: 650; }
+    .action .plus { width: 25px; height: 25px; display: grid; place-items: center; border-radius: 50%; }
+    .action.feed { color: #906716; background: var(--soft-yellow); }
+    .action.feed .plus { background: #ffe09a; }
+    .action.growth { color: #3d8859; background: var(--soft-green); }
+    .action.growth .plus { background: #c8ebd4; }
+    .list { overflow: hidden; }
+    .row { min-height: 62px; display: grid; grid-template-columns: 50px 1fr auto; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--line); }
+    .row:last-child { border-bottom: 0; }
+    .row .time { color: var(--muted); font-size: 13px; }
+    .row b { display: block; font-size: 14px; }
+    .row small { color: var(--muted); font-size: 11px; }
+    .row .value { font-size: 14px; font-weight: 650; }
+    .reminder { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding: 13px 15px; background: var(--soft-yellow); border-radius: 15px; font-size: 13px; }
+    .reminder strong { color: #936815; }
+    .tabbar { position: absolute; left: 0; right: 0; bottom: 0; height: 72px; display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px 12px 14px; border-top: 1px solid var(--line); background: rgba(255,255,255,.95); }
+    .tab { display: grid; place-items: center; align-content: center; gap: 3px; color: #9ba39e; font-size: 10px; }
+    .tab .icon { width: 23px; height: 23px; display: grid; place-items: center; border-radius: 8px; font-size: 14px; }
+    .tab.active { color: #397f54; font-weight: 650; }
+    .tab.active .icon { background: var(--soft-green); }
+
+    .native .phone { background: #f7f7f7; }
+    .native .traffic { display: none; }
+    .native .content { padding-left: 16px; padding-right: 16px; }
+    .native .card, .native .action, .native .reminder { border-radius: 11px; box-shadow: none; }
+    .native .summary { border: 1px solid #eceeed; }
+    .native .stat { background: transparent; padding: 7px 0; }
+    .native .stat + .stat { border-left: 1px solid var(--line); padding-left: 14px; }
+    .native .action { background: #fff; border: 1px solid #e3e7e4; }
+    .native .action.feed { color: #a47312; }
+    .native .action.growth { color: #378253; }
+
+    .tdesign .phone { background: #f3f6f4; }
+    .tdesign .topbar { padding: 7px 92px 6px 5px; }
+    .tdesign .summary { box-shadow: 0 8px 22px rgba(61,93,76,.08); }
+    .tdesign .summary-head::before { content: ""; width: 4px; height: 18px; margin-right: 8px; border-radius: 3px; background: var(--green); }
+    .tdesign .summary-head { justify-content: flex-start; }
+    .tdesign .summary-head .badge { margin-left: auto; }
+    .tdesign .stat { border: 1px solid rgba(255,255,255,.8); }
+
+    .fresh .phone { background: linear-gradient(180deg, #fffdfa 0, #f7faf8 58%, #f3f7f5 100%); }
+    .fresh .content { padding-left: 20px; padding-right: 20px; }
+    .fresh .topbar {
+      min-height: 130px;
+      margin-bottom: 2px;
+      padding: 15px 92px 15px 17px;
+      border-radius: 20px;
+      color: var(--ink);
+      background: #ffe8e5;
+      box-shadow: 0 10px 24px rgba(217,92,85,.1);
+    }
+    .fresh .topbar .subtitle { color: #8a6f6c; }
+    .fresh .topbar .quote { max-width: 225px; margin-top: 15px; color: #715f5c; font-size: 12px; line-height: 1.5; }
+    .fresh .summary { position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.9); box-shadow: 0 12px 32px rgba(62,89,75,.09); }
+    .fresh .summary::after { content: ""; position: absolute; width: 105px; height: 105px; right: -35px; top: -38px; border-radius: 50%; background: rgba(228,245,234,.8); }
+    .fresh .summary-head, .fresh .stats { position: relative; z-index: 1; }
+    .fresh .stat { min-height: 92px; }
+    .fresh .action { border: 1px solid rgba(255,255,255,.95); box-shadow: 0 8px 20px rgba(61,93,76,.06); }
+    .fresh .list { box-shadow: 0 9px 26px rgba(61,93,76,.055); }
+    @media (max-width: 500px) {
+      .page { padding: 28px 0 44px 14px; }
+      .intro { padding-right: 18px; }
+      .options { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="intro">
+      <h1>宝贝时光 · 首页方向比较</h1>
+      <p>三套方案使用相同功能与数据，并遵守微信胶囊、触控区域、底部安全区和四项导航约束。横向滚动可查看全部方案。</p>
+    </section>
+    <section class="options">
+      <article class="option native">
+        <header class="meta">
+          <h2>A · 微信原生稳妥</h2>
+          <p>更接近微信内置页面，信息直接、学习成本最低。</p>
+          <p>实现：原生组件 / WeUI；难度：低。</p>
+        </header>
+        <div class="phone">
+          <div class="status">9:41</div><div class="capsule"></div>
+          <div class="content">
+            <header class="topbar"><div class="title">宝贝时光</div><div class="subtitle">乐乐 · 6个月</div></header>
+            <div class="section-title">今日概览</div>
+            <section class="card summary">
+              <div class="summary-head"><span>今天</span><span class="badge">下次提醒 19:00</span></div>
+              <div class="stats"><div class="stat feed"><strong>4 次</strong><small>吃奶 · 共 620 ml</small></div><div class="stat growth"><strong>7.2 kg</strong><small>最近体重</small></div></div>
+            </section>
+            <div class="section-title">快速记录</div>
+            <div class="actions"><div class="action feed"><span class="plus">＋</span>记吃奶</div><div class="action growth"><span class="plus">＋</span>记成长</div></div>
+            <div class="section-title">今天</div>
+            <div class="card list"><div class="row"><span class="time">09:30</span><span><b>奶粉</b><small>妈妈记录</small></span><span class="value">180 ml</span></div><div class="row"><span class="time">12:10</span><span><b>母乳</b><small>爸爸记录</small></span><span class="value">15 分钟</span></div><div class="row"><span class="time">15:00</span><span><b>体重</b><small>妈妈记录</small></span><span class="value">7.2 kg</span></div></div>
+            <div class="reminder"><span>喂奶提醒</span><strong>还有 35 分钟</strong></div>
+          </div>
+          <nav class="tabbar"><div class="tab active"><span class="icon">⌂</span>首页</div><div class="tab"><span class="icon">◷</span>记录</div><div class="tab"><span class="icon">⌁</span>成长</div><div class="tab"><span class="icon">○</span>我的</div></nav>
+        </div>
+      </article>
+
+      <article class="option tdesign">
+        <header class="meta">
+          <h2>B · 轻品牌工具感</h2>
+          <p>保持微信习惯，卡片层级更清晰，适合后续扩展设置与表单。</p>
+          <p>实现：TDesign MiniProgram；难度：中。</p>
+        </header>
+        <div class="phone">
+          <div class="status">9:41</div><div class="capsule"></div>
+          <div class="content">
+            <header class="topbar"><div class="traffic"><i></i><i></i><i></i></div><div class="title">宝贝时光</div><div class="subtitle">乐乐 · 6个月</div></header>
+            <div class="section-title">今日概览</div>
+            <section class="card summary">
+              <div class="summary-head"><span>成长小结</span><span class="badge">下次提醒 19:00</span></div>
+              <div class="stats"><div class="stat feed"><strong>4 次</strong><small>吃奶 · 共 620 ml</small></div><div class="stat growth"><strong>7.2 kg</strong><small>最近体重</small></div></div>
+            </section>
+            <div class="section-title">快速记录</div>
+            <div class="actions"><div class="action feed"><span class="plus">＋</span>记吃奶</div><div class="action growth"><span class="plus">＋</span>记成长</div></div>
+            <div class="section-title">今天</div>
+            <div class="card list"><div class="row"><span class="time">09:30</span><span><b>奶粉</b><small>妈妈记录</small></span><span class="value">180 ml</span></div><div class="row"><span class="time">12:10</span><span><b>母乳</b><small>爸爸记录</small></span><span class="value">15 分钟</span></div><div class="row"><span class="time">15:00</span><span><b>体重</b><small>妈妈记录</small></span><span class="value">7.2 kg</span></div></div>
+            <div class="reminder"><span>喂奶提醒</span><strong>还有 35 分钟</strong></div>
+          </div>
+          <nav class="tabbar"><div class="tab active"><span class="icon">⌂</span>首页</div><div class="tab"><span class="icon">◷</span>记录</div><div class="tab"><span class="icon">⌁</span>成长</div><div class="tab"><span class="icon">○</span>我的</div></nav>
+        </div>
+      </article>
+
+      <article class="option fresh">
+        <header class="meta">
+          <h2>C · 苹果小清新</h2>
+          <p>以红黄绿小圆点建立识别，奶油白与低饱和色块更温暖轻盈。</p>
+          <p>实现：原生 WXML/WXSS 自定义组件；难度：中。</p>
+        </header>
+        <div class="phone">
+          <div class="status">9:41</div><div class="capsule"></div>
+          <div class="content">
+            <header class="topbar"><div class="traffic"><i></i><i></i><i></i></div><div class="title">宝贝时光</div><div class="subtitle">乐乐 · 6个月</div><div class="quote">小小的日常，正在写成温柔的童年。</div></header>
+            <div class="section-title">今日概览</div>
+            <section class="card summary">
+              <div class="summary-head"><span>今天过得怎么样</span><span class="badge">下次提醒 19:00</span></div>
+              <div class="stats"><div class="stat feed"><strong>4 次</strong><small>吃奶 · 共 620 ml</small></div><div class="stat growth"><strong>7.2 kg</strong><small>最近体重</small></div></div>
+            </section>
+            <div class="section-title">快速记录</div>
+            <div class="actions"><div class="action feed"><span class="plus">＋</span>记吃奶</div><div class="action growth"><span class="plus">＋</span>记成长</div></div>
+            <div class="section-title">今天的足迹</div>
+            <div class="card list"><div class="row"><span class="time">09:30</span><span><b>奶粉</b><small>妈妈记录</small></span><span class="value">180 ml</span></div><div class="row"><span class="time">12:10</span><span><b>母乳</b><small>爸爸记录</small></span><span class="value">15 分钟</span></div><div class="row"><span class="time">15:00</span><span><b>体重</b><small>妈妈记录</small></span><span class="value">7.2 kg</span></div></div>
+            <div class="reminder"><span>轻轻提醒你</span><strong>还有 35 分钟</strong></div>
+          </div>
+          <nav class="tabbar"><div class="tab active"><span class="icon">⌂</span>首页</div><div class="tab"><span class="icon">◷</span>记录</div><div class="tab"><span class="icon">⌁</span>成长</div><div class="tab"><span class="icon">○</span>我的</div></nav>
+        </div>
+      </article>
+    </section>
+    <p class="note">说明：这里使用字符代替最终本地 PNG 导航图标。进入开发后会换成项目内本地图标，并在微信开发者工具及真机检查胶囊、安全区和字体差异。</p>
+  </main>
+</body>
+</html>

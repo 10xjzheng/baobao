@@ -1,0 +1,6 @@
+<view class="page"><view class="safe-top" style="height: {{statusBarHeight}}px"></view><view class="page-title">我的</view>
+  <view class="card profile"><image class="avatar" src="/assets/default-baby-avatar.svg" mode="aspectFill"/><view class="baby-info"><text class="name">{{baby.name}}</text><view class="baby-meta"><text class="baby-age">{{baby.ageText}}</text><text class="meta-dot">·</text><text class="baby-gender">{{baby.genderLabel}}</text></view></view></view>
+  <autumn-leaves/>
+  <view class="card menu"><button bindtap="openFamily"><text>家庭成员</text><text class="muted">{{members.length}}人 ›</text></button><button bindtap="openReminder"><text>喂奶提醒</text><text class="muted">{{reminder.enabled ? '已开启' : '已关闭'}} ›</text></button><button bindtap="openBabyProfile"><text>宝宝档案</text><text class="muted">›</text></button></view>
+  <view class="section-title">家庭成员</view><view class="card members"><view wx:for="{{members}}" wx:key="id" class="member"><view class="member-avatar">{{item.initial}}</view><text>{{item.nickname}}</text><text class="role {{item.role}}">{{item.roleName}}</text></view></view>
+</view>

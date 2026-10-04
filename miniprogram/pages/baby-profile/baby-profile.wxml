@@ -1,0 +1,11 @@
+<view class="page">
+  <autumn-leaves/>
+  <view class="safe-top" style="height: {{statusBarHeight}}px"></view>
+  <view class="page-title"><text>宝宝档案</text><button class="close" bindtap="goBack">×</button></view>
+  <view class="card form-card">
+    <view class="field"><text class="field-label">宝宝昵称</text><input class="field-input" type="nickname" maxlength="20" value="{{name}}" data-field="name" bindinput="updateField"/></view>
+    <view class="field"><text class="field-label">生日</text><picker mode="date" value="{{birthday}}" data-field="birthday" bindchange="updateField"><view class="field-input picker">{{birthday || '请选择生日'}}</view></picker></view>
+    <view class="field"><text class="field-label">性别</text><view class="choices"><button class="{{gender === 'girl' ? 'active pink' : ''}}" data-gender="girl" bindtap="setGender">女宝宝</button><button class="{{gender === 'boy' ? 'active green' : ''}}" data-gender="boy" bindtap="setGender">男宝宝</button><button class="{{gender === 'unknown' ? 'active yellow' : ''}}" data-gender="unknown" bindtap="setGender">暂不填写</button></view></view>
+  </view>
+  <button class="primary-button save" loading="{{saving}}" bindtap="save">保存档案</button>
+</view>

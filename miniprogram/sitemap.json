@@ -1,0 +1,4 @@
+{
+  "desc": "宝贝时光页面索引",
+  "rules": [{ "action": "allow", "page": "*" }]
+}

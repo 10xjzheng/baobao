@@ -1,0 +1,9 @@
+<view class="page"><view class="safe-top" style="height: {{statusBarHeight}}px"></view><view class="page-title"><text>记录</text></view>
+  <view class="segments"><button class="{{tab === 'feed' ? 'active' : ''}}" data-tab="feed" bindtap="setTab">喂奶记录</button><button data-tab="growth" bindtap="setTab">成长记录</button></view>
+  <autumn-leaves/>
+  <button class="primary-button add-record-button" bindtap="addRecord">＋ 添加喂奶记录</button>
+  <view class="section-title">全部记录</view>
+  <view wx:if="{{loading}}" class="card loading">正在整理记录…</view>
+  <view wx:elif="{{records.length}}" class="card record-list"><view wx:for="{{records}}" wx:key="id" class="record"><text class="time">{{item.timeText}}</text><view><text class="title">{{item.typeName}}</text><text class="meta">{{item.recorderName}}记录 · {{item.dateText}}</text></view><view class="record-end"><text class="value">{{item.valueText}}</text><button class="delete" data-id="{{item.id}}" bindtap="confirmDelete">删除</button></view></view></view>
+  <view wx:else class="card empty"><view class="empty-icon">♡</view><view class="empty-title">还没有喂奶记录</view><view class="empty-text">添加第一条记录后，会在这里按时间显示。</view></view>
+</view>

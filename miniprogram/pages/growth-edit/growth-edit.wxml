@@ -1,0 +1,14 @@
+<view class="page">
+  <autumn-leaves/>
+  <view class="safe-top" style="height: {{statusBarHeight}}px"></view>
+  <view class="page-title"><text>新增成长记录</text><button class="close" bindtap="goBack">×</button></view>
+  <view class="form-tip">只填写本次测量项即可，空缺项会自动沿用最近一次有效记录。</view>
+  <view class="card form-card">
+    <view class="field"><text class="field-label">测量日期</text><picker mode="date" value="{{measuredAt}}" bindchange="updateField" data-field="measuredAt"><view class="field-input picker">{{measuredAt}}</view></picker></view>
+    <view class="field"><text class="field-label">体重（kg）</text><input class="field-input" type="digit" value="{{weight}}" placeholder="例如 7.20" data-field="weight" bindinput="updateField"/></view>
+    <view class="field"><text class="field-label">身高（cm）</text><input class="field-input" type="digit" value="{{height}}" placeholder="例如 66.5" data-field="height" bindinput="updateField"/></view>
+    <view class="field"><text class="field-label">头围（cm）</text><input class="field-input" type="digit" value="{{headCircumference}}" placeholder="例如 42.0" data-field="headCircumference" bindinput="updateField"/></view>
+    <view class="field"><text class="field-label">备注</text><input class="field-input" maxlength="200" placeholder="可选" data-field="note" bindinput="updateField"/></view>
+  </view>
+  <button class="primary-button save" loading="{{saving}}" bindtap="save">保存记录</button>
+</view>

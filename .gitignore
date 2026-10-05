@@ -1,0 +1,5 @@
+.edge-preview*/
+cloudfunctions/**/node_modules/
+project.private.config.json
+docs/miniapp/test-artifacts/
+miniprogram/assets/default-baby-avatar.jpg

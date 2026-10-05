@@ -1,0 +1,5 @@
+<view class="leaves-layer" aria-hidden="true">
+  <view wx:for="{{leaves}}" wx:key="*this" class="maple leaf-{{index}}">
+    <image class="leaf-body" src="/assets/maple-leaf.svg" mode="aspectFit"/>
+  </view>
+</view>

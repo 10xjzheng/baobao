@@ -1,0 +1,9 @@
+<view class="page"><view class="safe-top" style="height: {{statusBarHeight}}px"></view><view class="page-title"><text>成长趋势</text></view>
+  <view class="segments"><button class="{{metric === 'weight' ? 'active weight' : ''}}" data-metric="weight" bindtap="selectMetric">体重</button><button class="{{metric === 'height' ? 'active height' : ''}}" data-metric="height" bindtap="selectMetric">身高</button><button class="{{metric === 'head' ? 'active head' : ''}}" data-metric="head" bindtap="selectMetric">头围</button></view>
+  <autumn-leaves/>
+  <button class="primary-button add-record-button" bindtap="addRecord">＋ 添加成长记录</button>
+  <view class="range"><button class="{{range === 'week' ? 'active' : ''}}" data-range="week" bindtap="selectRange">周</button><button class="{{range === 'month' ? 'active' : ''}}" data-range="month" bindtap="selectRange">月</button><button class="{{range === 'all' ? 'active' : ''}}" data-range="all" bindtap="selectRange">全部</button></view>
+  <view class="card chart-card"><view class="chart-head"><view><text class="muted">{{metricLabel}}</text><view class="latest">{{latest}} <text class="unit">{{unit}}</text></view></view><text class="muted">最近记录</text></view><canvas canvas-id="growthChart" class="chart"></canvas><view class="delta"><text>与上次相比</text><text>{{delta}}</text></view></view>
+  <view wx:if="{{visibleRecords.length < 2}}" class="card empty"><view class="empty-icon">↗</view><view class="empty-title">再记录一次，就能看到趋势</view></view>
+  <view class="section-title">测量明细</view><view class="card details"><view wx:for="{{detailRecords}}" wx:key="id" class="detail"><view class="detail-content"><text>{{item.measuredAt}}</text><text class="muted">{{item.recorderName}}记录</text></view><view class="detail-end"><text>{{item.metricValue}} {{unit}}</text><button class="delete" data-id="{{item.id}}" bindtap="confirmDelete">删除</button></view></view></view>
+</view>

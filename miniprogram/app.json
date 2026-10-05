@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/records/records",
+    "pages/growth/growth",
+    "pages/profile/profile",
+    "pages/feed-edit/feed-edit",
+    "pages/growth-edit/growth-edit",
+    "pages/family/family",
+    "pages/reminder/reminder",
+    "pages/baby-profile/baby-profile"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#FBFBFA",
+    "backgroundTextStyle": "dark"
+  },
+  "usingComponents": {
+    "autumn-leaves": "/components/autumn-leaves/autumn-leaves"
+  },
+  "tabBar": {
+    "color": "#9BA39E",
+    "selectedColor": "#3D8859",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页", "iconPath": "assets/tabs/home.png", "selectedIconPath": "assets/tabs/home-active.png" },
+      { "pagePath": "pages/records/records", "text": "记录", "iconPath": "assets/tabs/records.png", "selectedIconPath": "assets/tabs/records-active.png" },
+      { "pagePath": "pages/growth/growth", "text": "成长", "iconPath": "assets/tabs/growth.png", "selectedIconPath": "assets/tabs/growth-active.png" },
+      { "pagePath": "pages/profile/profile", "text": "我的", "iconPath": "assets/tabs/profile.png", "selectedIconPath": "assets/tabs/profile-active.png" }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

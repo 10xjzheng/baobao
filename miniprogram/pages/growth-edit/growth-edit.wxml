@@ -1,5 +1,5 @@
 <view class="page">
-  <autumn-leaves/>
+  <autumn-leaves></autumn-leaves>
   <view class="safe-top" style="height: {{statusBarHeight}}px"></view>
   <view class="page-title"><text>新增成长记录</text><button class="close" bindtap="goBack">×</button></view>
   <view class="form-tip">只填写本次测量项即可，空缺项会自动沿用最近一次有效记录。</view>

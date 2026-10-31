@@ -1,5 +1,5 @@
 <view class="page">
-  <autumn-leaves/>
+  <autumn-leaves></autumn-leaves>
   <view class="safe-top" style="height: {{statusBarHeight}}px"></view>
   <view class="hero {{baby.heroClass}}">
     <view class="traffic"><view></view><view></view><view></view></view>

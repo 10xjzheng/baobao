@@ -47,13 +47,18 @@ async function getDashboard(openid) {
   const reminder = (await database.collection(COLLECTIONS.reminders).where({ babyId: membership.babyId }).limit(1).get()).data[0];
   const today = new Date().toISOString().slice(0, 10);
   const todayFeeds = feeds.filter(record => String(record.recordedAt).startsWith(today));
-  const reminderInfo = computeNextReminder(todayFeeds[0], reminder);
-  return { baby: { id: baby._id, name: baby.name, birthday: baby.birthday || '', gender: baby.gender || 'unknown' }, feedCount: todayFeeds.length, feedAmount: todayFeeds.reduce((total, record) => total + Number(record.amount || 0), 0), latestWeight: growth ? growth.weight : null, ...reminderInfo, timeline: todayFeeds.slice(0, 3).map(formatFeed) };
+  const milkFeeds = todayFeeds.filter(record => record.type !== 'solid');
+  const reminderInfo = computeNextReminder(milkFeeds[0], reminder);
+  return { baby: { id: baby._id, name: baby.name, birthday: baby.birthday || '', gender: baby.gender || 'unknown' }, feedCount: milkFeeds.length, feedAmount: milkFeeds.reduce((total, record) => total + Number(record.amount || 0), 0), latestWeight: growth ? growth.weight : null, ...reminderInfo, timeline: todayFeeds.slice(0, 3).map(formatFeed) };
 }
 
 function formatFeed(record) {
-  const typeNames = { breast: '母乳', formula: '奶粉', mixed: '混合' };
-  return { id: record._id, type: record.type, typeName: typeNames[record.type], amount: record.amount, duration: record.duration, recordedAt: record.recordedAt, dateText: String(record.recordedAt).slice(0, 10), timeText: String(record.recordedAt).slice(11, 16), valueText: record.amount ? `${record.amount} ml` : `${record.duration || 0} 分钟`, recorderName: record.recorderName || '家庭成员' };
+  const typeNames = { breast: '母乳', formula: '奶粉', mixed: '混合', solid: '辅食' };
+  const parts = [];
+  if (record.amount) parts.push(`${record.amount} ml`);
+  if (record.duration) parts.push(`${record.duration} 分钟`);
+  if (record.solidAmount) parts.push(`辅食 ${record.solidAmount} ml`);
+  return { id: record._id, type: record.type, typeName: typeNames[record.type], amount: record.amount, duration: record.duration, solidAmount: record.solidAmount || 0, recordedAt: record.recordedAt, dateText: String(record.recordedAt).slice(0, 10), timeText: String(record.recordedAt).slice(11, 16), valueText: parts.join(' · '), recorderName: record.recorderName || '家庭成员' };
 }
 
 function timeToMinutes(value) {
@@ -89,12 +94,22 @@ async function listFeedRecords(openid) {
 async function createFeed(openid, payload) {
   const membership = await requireMembership(openid, ['admin', 'editor']);
   const type = text(payload.type, 12);
-  if (!['breast', 'formula', 'mixed'].includes(type)) throw new Error('喂养方式不正确');
-  const amount = type === 'breast' ? 0 : numberInRange(payload.amount, 1, 1000);
-  const duration = type === 'formula' ? 0 : numberInRange(payload.duration, 1, 240);
+  if (!['breast', 'formula', 'mixed', 'solid'].includes(type)) throw new Error('喂养方式不正确');
+  let amount; let duration; let solidAmount;
+  if (type === 'mixed') {
+    const filled = value => Number.isFinite(Number(value)) && Number(value) > 0;
+    amount = filled(payload.amount) ? numberInRange(payload.amount, 1, 1000) : 0;
+    duration = filled(payload.duration) ? numberInRange(payload.duration, 1, 240) : 0;
+    solidAmount = filled(payload.solidAmount) ? numberInRange(payload.solidAmount, 1, 1000) : 0;
+    if ([amount, duration, solidAmount].filter(value => value > 0).length < 2) throw new Error('混合喂养请至少填写两项');
+  } else {
+    amount = type === 'breast' ? 0 : numberInRange(payload.amount, 1, 1000);
+    duration = type === 'breast' ? numberInRange(payload.duration, 1, 240) : 0;
+    solidAmount = 0;
+  }
   const recordedAt = text(payload.recordedAt, 16);
   if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(recordedAt)) throw new Error('记录时间格式不正确');
-  const result = await database.collection(COLLECTIONS.feeds).add({ data: { babyId: membership.babyId, type, amount, duration, note: text(payload.note), recordedAt, recorderId: membership._id, recorderName: membership.nickname, createdBy: openid, createdAt: database.serverDate(), updatedAt: database.serverDate() } });
+  const result = await database.collection(COLLECTIONS.feeds).add({ data: { babyId: membership.babyId, type, amount, duration, solidAmount, note: text(payload.note), recordedAt, recorderId: membership._id, recorderName: membership.nickname, createdBy: openid, createdAt: database.serverDate(), updatedAt: database.serverDate() } });
   return { id: result._id };
 }
 

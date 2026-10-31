@@ -1,6 +1,6 @@
 <view class="page"><view class="safe-top" style="height: {{statusBarHeight}}px"></view><view class="page-title"><text>记录</text></view>
   <view class="segments"><button class="{{tab === 'feed' ? 'active' : ''}}" data-tab="feed" bindtap="setTab">喂奶记录</button><button data-tab="growth" bindtap="setTab">成长记录</button></view>
-  <autumn-leaves/>
+  <autumn-leaves></autumn-leaves>
   <button class="primary-button add-record-button" bindtap="addRecord">＋ 添加喂奶记录</button>
   <view class="section-title">全部记录</view>
   <view wx:if="{{loading}}" class="card loading">正在整理记录…</view>

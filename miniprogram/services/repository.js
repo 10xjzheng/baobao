@@ -17,13 +17,17 @@ async function callCloud(action, payload = {}) {
 }
 
 function formatFeed(record) {
-  const typeNames = { breast: '母乳', formula: '奶粉', mixed: '混合' };
+  const typeNames = { breast: '母乳', formula: '奶粉', mixed: '混合', solid: '辅食' };
+  const parts = [];
+  if (record.amount) parts.push(`${record.amount} ml`);
+  if (record.duration) parts.push(`${record.duration} 分钟`);
+  if (record.solidAmount) parts.push(`辅食 ${record.solidAmount} ml`);
   return {
     ...record,
     typeName: typeNames[record.type] || '喂奶',
     dateText: record.recordedAt.slice(0, 10),
     timeText: record.recordedAt.slice(11, 16),
-    valueText: record.amount ? `${record.amount} ml` : `${record.duration || 0} 分钟`
+    valueText: parts.join(' · ')
   };
 }
 
@@ -57,12 +61,13 @@ async function getDashboard() {
   const data = localStore.read();
   const today = localStore.dateText();
   const todayFeeds = data.feedRecords.filter(record => record.recordedAt.startsWith(today));
+  const milkFeeds = todayFeeds.filter(record => record.type !== 'solid');
   const latestGrowth = data.growthRecords[data.growthRecords.length - 1];
-  const reminderInfo = computeNextReminder(todayFeeds[todayFeeds.length - 1], data.reminder);
+  const reminderInfo = computeNextReminder(milkFeeds[milkFeeds.length - 1], data.reminder);
   return {
     mode: 'demo', baby: data.baby,
-    feedCount: todayFeeds.length,
-    feedAmount: todayFeeds.reduce((total, record) => total + (record.amount || 0), 0),
+    feedCount: milkFeeds.length,
+    feedAmount: milkFeeds.reduce((total, record) => total + (record.amount || 0), 0),
     latestWeight: latestGrowth ? latestGrowth.weight : null,
     ...reminderInfo,
     timeline: todayFeeds.slice(-3).reverse().map(formatFeed)

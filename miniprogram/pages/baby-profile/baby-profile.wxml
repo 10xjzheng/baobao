@@ -1,5 +1,5 @@
 <view class="page">
-  <autumn-leaves/>
+  <autumn-leaves></autumn-leaves>
   <view class="safe-top" style="height: {{statusBarHeight}}px"></view>
   <view class="page-title"><text>宝宝档案</text><button class="close" bindtap="goBack">×</button></view>
   <view class="card form-card">
